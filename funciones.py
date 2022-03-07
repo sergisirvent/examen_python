@@ -54,18 +54,22 @@ def repartir_cartas(cartas_iniciales,repeticiones):
       repeticiones
     Returns:
       combinaciones: ej. {'repeticion1': ['contable', 'alguacil', 'asesino', 'cardenal', 'obispo']}
-    """    
+    """   
+    #El error era que al eliminar las cartas para que no se repitieran, se eliminaban de la lista y no podian volver a ser elegidas en otra combinacion distinta
+    #Como solucion he cambiado la manera en que se vuelven a añadir las cartas a la lista de cartas disponibles para las combinaciones
     combinaciones={}
+    cartas_aleatorias = []
     for i in range(1,repeticiones+1):
-        print("iteracion")
-        cartas_aleatorias = cartas_iniciales 
-        combinaciones["repeticion"+str(i)]=[]
-        for j in range(0,5):
-            carta=random.choice(cartas_aleatorias)
-            combinaciones["repeticion"+str(i)].append(carta)
-            cartas_aleatorias.remove(carta)
+      for carta in cartas_iniciales:
+        cartas_aleatorias.append(carta)
+        
+      combinaciones["repeticion"+str(i)]=[]
+      
+      for j in range(0,5):
+          carta=random.choice(cartas_aleatorias)
+          combinaciones["repeticion"+str(i)].append(carta)
+          cartas_aleatorias.remove(carta)
 
     return combinaciones
 
-cartas_iniciales = ["reina","guardia","asesino","obispo","alguacil","bufon","contable","adulador","baronesa","cardenal"]
-repartir_cartas(cartas_iniciales,3)
+

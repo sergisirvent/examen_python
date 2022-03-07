@@ -104,31 +104,46 @@ def choose_secret_advanced(filename):
         for j in range(len(lista_prohibidas)):
           if linea[i] == lista_prohibidas[j]:
             acento = True
-      if not acento:
-        lista_lineas_buenas.append(linea)
+        if not acento:
+          lista_lineas_buenas.append(linea)
 
-    numero_random = randint(0,len(lista_lineas_buenas))
-    palabra = ""
-    palabra += lista_lineas_buenas[numero_random][0]
-    palabra += lista_lineas_buenas[numero_random][1]
-    palabra += lista_lineas_buenas[numero_random][2]
-    palabra += lista_lineas_buenas[numero_random][3]
-    palabra += lista_lineas_buenas[numero_random][4]
-    return palabra
+    selected = []
+    for i in range(0,15):
+      numero_random = randint(0,len(lista_lineas_buenas))
+      #print(lista_lineas_buenas)
+      palabra = ""
+      palabra += lista_lineas_buenas[numero_random][0]
+      palabra += lista_lineas_buenas[numero_random][1]
+      palabra += lista_lineas_buenas[numero_random][2]
+      palabra += lista_lineas_buenas[numero_random][3]
+      palabra += lista_lineas_buenas[numero_random][4]
+      selected.append(palabra)
+
+    secret = selected[randint(0,15)]
+    print(selected)
+    return selected,secret
 
 
 
  
-def check_valid_word():
+def check_valid_word(selected):
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
     Args:
       selected: Lista de palabras.
     Returns:
       word: Palabra introducida por el usuario que está en la lista.
     """
+    correcta = False
+    while not correcta:
+      word = word = input("Introduce una palabra de la lista: ")
+      for palabra in selected:
+        if palabra == word:
+          correcta = True
 
 if __name__ == "__main__":
-    secret=choose_secret_advanced("palabras_reduced.txt")
+
+    selected,secret=choose_secret_advanced("palabras_reduced.txt")
+    
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
