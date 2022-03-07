@@ -26,9 +26,19 @@ def compare_words(word,secret):
       same_position: Lista de posiciones de word cuyas letras coinciden en la misma posición en secret. En el caso anterior: [0]
       same_letter: Lista de posiciones de word cuyas letras están en secret pero en posiciones distintas. En el caso anterior: [1,2]
     """
-    
+    same_position = []
+    same_letter = []
+    for i in range(0,len(word)):
+      for j in range(0,len(secret)):
+        if word[i] == secret[j]:
+          if i == j:
+            same_position.append(i)
+          else:
+            same_letter.append(i)
 
-def print_word():
+    return same_position,same_letter
+
+def print_word(word,same_letter_position,same_letter):
     """Dada una palabra, una lista same_position y otra lista same_letter, esta función creará un string donde aparezcan en mayúsculas las letras de la palabra que ocupen las posiciones de same_position, en minúsculas las letras de la palabra que ocupen las posiciones de same_letter y un guión (-) en el resto de posiciones
     Args:
       word: Una palabra. Ej. "CAMPO"
@@ -37,7 +47,31 @@ def print_word():
     Returns:
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
     """
+    posiciones_tocadas = []
     
+    for i in range(0,len(same_letter_position)):
+      posicion_a_cambiar = same_letter_position[i]
+      posiciones_tocadas.append(same_letter_position[i])
+      word[posicion_a_cambiar].upper()
+
+    for i in range(0,len(same_letter)):
+      posicion_a_cambiar = same_letter[i]
+      posiciones_tocadas.append(same_letter[i])
+      word[posicion_a_cambiar].lower()
+
+    
+    for i in range(0,len(word)):
+      esta = False
+      for j in range(0,len(posiciones_tocadas)):
+        if i == posiciones_tocadas[j]:
+          esta = True
+      if not esta:
+        word[i] = "-"
+
+    return word
+
+      
+
 def choose_secret_advanced():
     """Dado un nombre de fichero, esta función filtra solo las palabras de 5 letras que no tienen acentos (á,é,í,ó,ú). De estas palabras, la función devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
     Args:
@@ -60,8 +94,8 @@ if __name__ == "__main__":
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
-        same_position, same_letter = compare_words()
-        resultado=print_word()
+        same_position, same_letter = compare_words(word,secret)
+        resultado=print_word(word,same_position,same_letter)
         print(resultado)
         if word == secret:
             print("HAS GANADO!!")
