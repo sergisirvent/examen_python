@@ -48,27 +48,35 @@ def print_word(word,same_letter_position,same_letter):
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
     """
     posiciones_tocadas = []
+    transform = ["c","i","n","c","o"]
     
-    for i in range(0,len(same_letter_position)):
-      posicion_a_cambiar = same_letter_position[i]
-      posiciones_tocadas.append(same_letter_position[i])
-      word[posicion_a_cambiar].upper()
 
     for i in range(0,len(same_letter)):
       posicion_a_cambiar = same_letter[i]
       posiciones_tocadas.append(same_letter[i])
-      word[posicion_a_cambiar].lower()
+      transform[posicion_a_cambiar] = word[posicion_a_cambiar].lower()
+      
 
-    
+    for i in range(0,len(same_letter_position)):
+      posicion_a_cambiar = same_letter_position[i]
+      posiciones_tocadas.append(same_letter_position[i])
+      transform[posicion_a_cambiar] = word[posicion_a_cambiar].upper()
+      
+      
     for i in range(0,len(word)):
       esta = False
       for j in range(0,len(posiciones_tocadas)):
         if i == posiciones_tocadas[j]:
           esta = True
       if not esta:
-        word[i] = "-"
+        transform[i] = "-"
+        
 
-    return word
+    palabra_transform = ""
+    for letra in transform:
+      palabra_transform += letra
+
+    return str(palabra_transform)
 
       
 
@@ -94,10 +102,13 @@ if __name__ == "__main__":
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
+        
         same_position, same_letter = compare_words(word,secret)
         resultado=print_word(word,same_position,same_letter)
         print(resultado)
-        if word == secret:
+        print("---------------------word " + "'"+word+"'")
+        print("---------------------secret " + "'"+secret+"'")
+        if word.upper == secret.upper:
             print("HAS GANADO!!")
             exit()
     print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
