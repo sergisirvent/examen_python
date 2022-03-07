@@ -11,15 +11,22 @@ def encontrar_menores(diccionario,letra):
     #El fallo es que estas comparando en el if, dos strings con el comparador logico <
     #Para arreglar este fallo se debe comparar clave con la posicion de la letra por parametro en el abecedario en el abecedario
 
-    for clave in diccionario:
-      clave
+    abecedario = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+    indice = -1
+    for i in range(0,len(abecedario)):
+      indice = 0
+      if letra.upper() == abecedario[i]:
+        indice = i
+        return indice
+      
 
     for clave in diccionario:
         for palabra in diccionario[clave]:
-            if clave < letra:
+
+            if palabra < indice:
                 resultado=[]
                 resultado.append(palabra)
-    return resultado
+    #return resultado
 
 def add_client(clients_list,nif,name,address,phone,email):
     """Dado un diccionario de clientes y datos de un nuevo cliente, esta función inserta estos datos como un nuevo cliente.
@@ -31,12 +38,13 @@ def add_client(clients_list,nif,name,address,phone,email):
       phone
       email
     """
+    #el fallo era que accedia a la clave con [nif], pero ademas en la asigancion volvia a repetir nif
+    #La solucion para esta funcion es quitar el nif de dentro de los corchetes , ya que con la linea 43 ya estamos accediendo a la informacion asociada a esa clave
     clients_list[nif] = {
-        nif: {'name': name,
-              'address': address,
-              'phone': phone,
-              'email': email
-        }
+        'name': name,
+        'address': address,
+        'phone': phone,
+        'email': email
     }
 
 def repartir_cartas(cartas_iniciales,repeticiones):
@@ -49,6 +57,7 @@ def repartir_cartas(cartas_iniciales,repeticiones):
     """    
     combinaciones={}
     for i in range(1,repeticiones+1):
+        print("iteracion")
         cartas_aleatorias = cartas_iniciales 
         combinaciones["repeticion"+str(i)]=[]
         for j in range(0,5):
@@ -58,4 +67,5 @@ def repartir_cartas(cartas_iniciales,repeticiones):
 
     return combinaciones
 
-    
+cartas_iniciales = ["reina","guardia","asesino","obispo","alguacil","bufon","contable","adulador","baronesa","cardenal"]
+repartir_cartas(cartas_iniciales,3)

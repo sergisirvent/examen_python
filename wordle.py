@@ -1,3 +1,4 @@
+from functools import partial
 import imp
 from random import random
 from random import randint
@@ -13,7 +14,12 @@ def choose_secret(filename):
     f = open(filename, mode="rt", encoding="utf-8")
     lista_lineas = f.readlines()
     numero_random = randint(0,len(lista_lineas))
-    palabra = lista_lineas[numero_random]
+    palabra = ""
+    palabra += lista_lineas[numero_random][0]
+    palabra += lista_lineas[numero_random][1]
+    palabra += lista_lineas[numero_random][2]
+    palabra += lista_lineas[numero_random][3]
+    palabra += lista_lineas[numero_random][4]
     return palabra
 
     
@@ -80,7 +86,7 @@ def print_word(word,same_letter_position,same_letter):
 
       
 
-def choose_secret_advanced():
+def choose_secret_advanced(filename):
     """Dado un nombre de fichero, esta función filtra solo las palabras de 5 letras que no tienen acentos (á,é,í,ó,ú). De estas palabras, la función devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
     Args:
       filename: El nombre del fichero. Ej. "palabras_extended.txt"
@@ -88,6 +94,30 @@ def choose_secret_advanced():
       selected: Lista de 15 palabras aleatorias no repetidas que tienen 5 letras y no tienen acentos
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayúsculas
     """
+
+    f = open(filename, mode="rt", encoding="utf-8")
+    lista_prohibidas = ["á","é","í","ó","ú"]
+    lista_lineas_buenas = []
+    for linea in f:
+      acento = False
+      for i in range(0,5):
+        for j in range(len(lista_prohibidas)):
+          if linea[i] == lista_prohibidas[j]:
+            acento = True
+      if not acento:
+        lista_lineas_buenas.append(linea)
+
+    numero_random = randint(0,len(lista_lineas_buenas))
+    palabra = ""
+    palabra += lista_lineas_buenas[numero_random][0]
+    palabra += lista_lineas_buenas[numero_random][1]
+    palabra += lista_lineas_buenas[numero_random][2]
+    palabra += lista_lineas_buenas[numero_random][3]
+    palabra += lista_lineas_buenas[numero_random][4]
+    return palabra
+
+
+
  
 def check_valid_word():
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
@@ -98,7 +128,7 @@ def check_valid_word():
     """
 
 if __name__ == "__main__":
-    secret=choose_secret("palabras_reduced.txt")
+    secret=choose_secret_advanced("palabras_reduced.txt")
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
@@ -106,9 +136,7 @@ if __name__ == "__main__":
         same_position, same_letter = compare_words(word,secret)
         resultado=print_word(word,same_position,same_letter)
         print(resultado)
-        print("---------------------word " + "'"+word+"'")
-        print("---------------------secret " + "'"+secret+"'")
-        if word.upper == secret.upper:
+        if word == secret:
             print("HAS GANADO!!")
             exit()
     print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
